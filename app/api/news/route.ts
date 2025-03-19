@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { rateLimiter } from '../../../utils/rateLimit';
-import { throttleRequest } from '../../../utils/throttle';
-import { validateRequest, newsQuerySchema, sanitizeContent } from '../../../utils/validation';
+import { rateLimiter } from '../../utils/rateLimit';
+import { throttleRequest } from '../../utils/throttle';
+import { validateRequest, newsQuerySchema, sanitizeContent } from '../../utils/validation';
 import axios, { AxiosError } from 'axios';
 
 const API_KEY = process.env.NEWS_API_KEY;
@@ -113,4 +113,4 @@ export async function GET(req: NextRequest) {
       { status: axiosError.response?.status || 500 }
     );
   }
-} 
+}
