@@ -127,12 +127,12 @@ export default function NewsSlider({ articles, onNeedMoreArticles }: NewsSliderP
       const swipeThreshold = 50; // Minimum distance to consider it a swipe
       
       if (!isTransitioning.current) {
-        if (swipeDistance < -swipeThreshold && currentIndex > 0) {
-          // Swiped up, show previous article
-          handlePrevious();
-        } else if (swipeDistance > swipeThreshold) {
-          // Swiped down, show next article
+        if (swipeDistance < -swipeThreshold) {
+          // Swiped up, show next article
           handleNext();
+        } else if (swipeDistance > swipeThreshold && currentIndex > 0) {
+          // Swiped down, show previous article
+          handlePrevious();
         }
       }
     };
@@ -204,7 +204,7 @@ export default function NewsSlider({ articles, onNeedMoreArticles }: NewsSliderP
                       })}
                     </span>
                   </div>
-                  <h2 className="text-xl font-bold mb-2 leading-tight line-clamp-2 text-black dark:text-white">{article.title}</h2>
+                  <h2 className="text-xl font-bold mb-2 leading-tight line-clamp-2 text-black dark:text-white md:text-gray-900">{article.title}</h2>
                   <p className="text-gray-600 mb-4 text-sm line-clamp-3">{article.description}</p>
                   <div className="flex items-center justify-between mt-auto pt-2 border-t border-gray-100">
                     <a
