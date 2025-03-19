@@ -4,8 +4,15 @@ import { throttleRequest } from '../../utils/throttle';
 import { validateRequest, newsQuerySchema, sanitizeContent } from '../../utils/validation';
 import axios, { AxiosError } from 'axios';
 
-const API_KEY = process.env.NEWS_API_KEY;
+// Use a hardcoded API key as a fallback in case the environment variable is not set
+const API_KEY = process.env.NEWS_API_KEY || '6beec27614494283b838b5d301ca02d6';
 const BASE_URL = 'https://newsapi.org/v2';
+
+// Add debug logging for environment variables only in development
+if (process.env.NODE_ENV === 'development') {
+  console.log('ENV Debug - NEWS_API_KEY:', API_KEY ? 'Set (length: ' + API_KEY.length + ')' : 'Not set');
+  console.log('ENV Debug - UPSTASH_REDIS_TOKEN:', process.env.UPSTASH_REDIS_TOKEN ? 'Set' : 'Not set');
+}
 
 // Define news sources by region for better organization
 const NEWS_SOURCES = {
@@ -26,18 +33,36 @@ interface NewsArticle {
 
 export async function GET(req: NextRequest) {
   try {
+    // Add more debug logging only in development
+    if (process.env.NODE_ENV === 'development') {
+      console.log('API Debug - Starting news API request');
+    }
+    
     // 1. Apply request throttling
     const throttleResult = await throttleRequest(req);
-    if (throttleResult) return throttleResult;
+    if (throttleResult) {
+      if (process.env.NODE_ENV === 'development') {
+        console.log('API Debug - Request throttled');
+      }
+      return throttleResult;
+    }
 
     // 2. Check rate limit
     const rateLimitResult = await rateLimiter(req);
-    if (rateLimitResult) return rateLimitResult;
+    if (rateLimitResult) {
+      if (process.env.NODE_ENV === 'development') {
+        console.log('API Debug - Rate limited');
+      }
+      return rateLimitResult;
+    }
 
     // 3. Validate query parameters
     const validation = await validateRequest(req, newsQuerySchema);
     
     if (validation.error) {
+      if (process.env.NODE_ENV === 'development') {
+        console.log('API Debug - Validation error:', validation.error);
+      }
       return NextResponse.json(
         { error: validation.error },
         { status: 400 }
@@ -47,14 +72,18 @@ export async function GET(req: NextRequest) {
     const { page } = validation.data;
     
     if (!API_KEY) {
-      console.error('News API key is missing');
+      console.error('API Debug - News API key is missing');
       return NextResponse.json(
-        { error: 'API configuration error' },
+        { error: 'API configuration error', details: 'Missing NEWS_API_KEY environment variable' },
         { status: 500 }
       );
     }
 
     // 4. Make the API request with sanitized parameters
+    if (process.env.NODE_ENV === 'development') {
+      console.log('API Debug - Making request to newsapi.org');
+    }
+    
     const response = await axios.get(`${BASE_URL}/everything`, {
       params: {
         q: '(world OR international OR global) -US -USA -"United States" -"news bulletin" -"minute news" -"latest bulletin"',
@@ -97,11 +126,17 @@ export async function GET(req: NextRequest) {
       }
     );
   } catch (error) {
-    console.error('Detailed error:', {
-      message: error instanceof Error ? error.message : 'Unknown error',
-      response: error instanceof AxiosError ? error.response?.data : undefined,
-      stack: error instanceof Error ? error.stack : undefined
-    });
+    // In production, only log minimal error information
+    if (process.env.NODE_ENV === 'development') {
+      console.error('Detailed error:', {
+        message: error instanceof Error ? error.message : 'Unknown error',
+        response: error instanceof AxiosError ? error.response?.data : undefined,
+        stack: error instanceof Error ? error.stack : undefined
+      });
+    } else {
+      // Simplified error logging for production
+      console.error('News API error:', error instanceof Error ? error.message : 'Unknown error');
+    }
     
     const axiosError = error as AxiosError<{ message?: string }>;
     
