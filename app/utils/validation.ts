@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 
 // Schema for query parameters
 export const newsQuerySchema = z.object({
