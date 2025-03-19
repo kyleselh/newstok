@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { NewsArticle } from '../types/news';
 import Image from 'next/image';
 import { getSourceInfo } from '../utils/regions';
@@ -17,15 +17,7 @@ export default function NewsSlider({ articles, onNeedMoreArticles }: NewsSliderP
   const isTransitioning = useRef(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (articles.length > 0) {
-      const firstArticle = getRandomArticle();
-      setDisplayedArticles([firstArticle]);
-      seenArticles.current.add(firstArticle.url);
-    }
-  }, [articles]);
-
-  const getRandomArticle = () => {
+  const getRandomArticle = useCallback(() => {
     const unseenArticles = articles.filter(article => !seenArticles.current.has(article.url));
     
     if (unseenArticles.length === 0) {
@@ -36,9 +28,9 @@ export default function NewsSlider({ articles, onNeedMoreArticles }: NewsSliderP
       onNeedMoreArticles();
     }
     return unseenArticles[Math.floor(Math.random() * unseenArticles.length)];
-  };
+  }, [articles, onNeedMoreArticles]);
 
-  const handleNext = () => {
+  const handleNext = useCallback(() => {
     if (isTransitioning.current) return;
     
     isTransitioning.current = true;
@@ -51,9 +43,9 @@ export default function NewsSlider({ articles, onNeedMoreArticles }: NewsSliderP
     setTimeout(() => {
       isTransitioning.current = false;
     }, 300);
-  };
+  }, [getRandomArticle]);
 
-  const handlePrevious = () => {
+  const handlePrevious = useCallback(() => {
     if (isTransitioning.current || currentIndex === 0) return;
     
     isTransitioning.current = true;
@@ -62,7 +54,15 @@ export default function NewsSlider({ articles, onNeedMoreArticles }: NewsSliderP
     setTimeout(() => {
       isTransitioning.current = false;
     }, 300);
-  };
+  }, [currentIndex]);
+
+  useEffect(() => {
+    if (articles.length > 0) {
+      const firstArticle = getRandomArticle();
+      setDisplayedArticles([firstArticle]);
+      seenArticles.current.add(firstArticle.url);
+    }
+  }, [articles, getRandomArticle]);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -84,7 +84,7 @@ export default function NewsSlider({ articles, onNeedMoreArticles }: NewsSliderP
     return () => {
       container.removeEventListener('wheel', handleWheel);
     };
-  }, [articles, currentIndex]);
+  }, [currentIndex, handleNext, handlePrevious]);
 
   return (
     <div 
