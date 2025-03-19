@@ -27,6 +27,7 @@ export default function Home() {
       }
       setCurrentPage(page);
     } catch (err) {
+      console.error('Failed to fetch news:', err);
       setError('Failed to fetch news. Please try again later.');
     } finally {
       setLoading(false);
