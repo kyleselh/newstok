@@ -1,5 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  reactStrictMode: true,
+  swcMinify: true,
   env: {
     NEWS_API_KEY: process.env.NEWS_API_KEY,
     UPSTASH_REDIS_TOKEN: process.env.UPSTASH_REDIS_TOKEN,
