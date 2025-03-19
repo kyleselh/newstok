@@ -86,6 +86,68 @@ export default function NewsSlider({ articles, onNeedMoreArticles }: NewsSliderP
     };
   }, [currentIndex, handleNext, handlePrevious]);
 
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    let touchStartY = 0;
+    let touchEndY = 0;
+    let touchStartX = 0;
+    let isSwiping = false;
+    
+    const handleTouchStart = (e: TouchEvent) => {
+      touchStartY = e.touches[0].clientY;
+      touchStartX = e.touches[0].clientX;
+      isSwiping = false;
+    };
+    
+    const handleTouchMove = (e: TouchEvent) => {
+      const touchY = e.touches[0].clientY;
+      const touchX = e.touches[0].clientX;
+      
+      // Calculate vertical and horizontal movement
+      const deltaY = Math.abs(touchY - touchStartY);
+      const deltaX = Math.abs(touchX - touchStartX);
+      
+      // If vertical movement is greater than horizontal and exceeds threshold, 
+      // consider it a vertical swipe and prevent default scrolling
+      if (deltaY > deltaX && deltaY > 10) {
+        isSwiping = true;
+        e.preventDefault();
+      }
+    };
+    
+    const handleTouchEnd = (e: TouchEvent) => {
+      if (!isSwiping) return;
+      
+      touchEndY = e.changedTouches[0].clientY;
+      
+      // Calculate swipe direction and distance
+      const swipeDistance = touchEndY - touchStartY;
+      const swipeThreshold = 50; // Minimum distance to consider it a swipe
+      
+      if (!isTransitioning.current) {
+        if (swipeDistance > swipeThreshold) {
+          // Swiped down, show next article
+          handleNext();
+        } else if (swipeDistance < -swipeThreshold && currentIndex > 0) {
+          // Swiped up, show previous article
+          handlePrevious();
+        }
+      }
+    };
+    
+    container.addEventListener('touchstart', handleTouchStart, { passive: true });
+    container.addEventListener('touchmove', handleTouchMove, { passive: false });
+    container.addEventListener('touchend', handleTouchEnd, { passive: true });
+    
+    return () => {
+      container.removeEventListener('touchstart', handleTouchStart);
+      container.removeEventListener('touchmove', handleTouchMove);
+      container.removeEventListener('touchend', handleTouchEnd);
+    };
+  }, [currentIndex, handleNext, handlePrevious]);
+
   return (
     <div 
       ref={containerRef}
