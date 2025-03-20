@@ -153,6 +153,10 @@ export default function NewsSlider({ articles, onNeedMoreArticles }: NewsSliderP
       ref={containerRef}
       className="h-screen overflow-hidden relative"
     >
+      <div className="absolute top-0 left-0 right-0 z-10 bg-white bg-opacity-80 p-4 text-center shadow-sm">
+        <h1 className="text-2xl font-bold text-blue-600">NewsTok</h1>
+        <p className="text-sm text-gray-600">Discover what's happening beyond US headlines</p>
+      </div>
       <div 
         className="absolute w-full transition-transform duration-300 ease-in-out"
         style={{
@@ -204,7 +208,7 @@ export default function NewsSlider({ articles, onNeedMoreArticles }: NewsSliderP
                       })}
                     </span>
                   </div>
-                  <h2 className="text-xl font-bold mb-2 leading-tight line-clamp-2 text-black dark:text-white md:text-gray-900">{article.title}</h2>
+                  <h2 className="text-xl font-bold mb-2 leading-tight line-clamp-2 text-gray-900">{article.title}</h2>
                   <p className="text-gray-600 mb-4 text-sm line-clamp-3">{article.description}</p>
                   <div className="flex items-center justify-between mt-auto pt-2 border-t border-gray-100">
                     <a
