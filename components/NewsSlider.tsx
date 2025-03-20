@@ -166,14 +166,14 @@ export default function NewsSlider({ articles, onNeedMoreArticles }: NewsSliderP
         {displayedArticles.map((article, index) => (
           <div
             key={`${article.url}-${index}`}
-            className="h-screen flex items-center justify-center p-4 pb-16"
+            className="h-screen flex items-center justify-center p-4 pb-16 md:pb-16 sm:p-2 sm:pb-8"
             style={{
               backgroundColor: index % 2 === 0 ? '#f8fafc' : '#f1f5f9',
             }}
           >
-            <div className="max-w-2xl w-full bg-white rounded-xl shadow-lg overflow-hidden">
+            <div className="max-w-2xl w-full bg-white rounded-xl shadow-lg overflow-hidden max-h-[90vh] sm:max-h-[95vh]">
               <div className="flex flex-col">
-                <div className="relative w-full h-[280px]">
+                <div className="relative w-full h-[280px] sm:h-[220px]">
                   {article.urlToImage ? (
                     <Image
                       src={article.urlToImage}
