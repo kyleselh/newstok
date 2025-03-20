@@ -153,12 +153,12 @@ export default function NewsSlider({ articles, onNeedMoreArticles }: NewsSliderP
       ref={containerRef}
       className="h-screen overflow-hidden relative"
     >
-      <div className="fixed top-0 left-0 right-0 z-50 bg-white p-2 text-center shadow-md">
+      <div className="fixed top-0 left-0 right-0 z-50 bg-white p-3 text-center shadow-md">
         <h1 className="text-2xl font-bold text-blue-600">NewsTok</h1>
         <p className="text-sm text-gray-600">Discover what's happening beyond US headlines</p>
       </div>
       <div 
-        className="absolute w-full transition-transform duration-300 ease-in-out pt-2"
+        className="absolute w-full transition-transform duration-300 ease-in-out"
         style={{
           transform: `translateY(-${currentIndex * 100}vh)`
         }}
@@ -166,14 +166,14 @@ export default function NewsSlider({ articles, onNeedMoreArticles }: NewsSliderP
         {displayedArticles.map((article, index) => (
           <div
             key={`${article.url}-${index}`}
-            className="h-screen flex items-center justify-center pt-14 pb-14 px-4 md:pb-16 sm:pt-8 sm:px-2"
+            className="h-screen flex items-center justify-center p-4 pt-16 pb-6 mx-auto"
             style={{
               backgroundColor: index % 2 === 0 ? '#f8fafc' : '#f1f5f9',
             }}
           >
-            <div className="max-w-2xl w-full bg-white rounded-xl shadow-lg overflow-hidden max-h-[90vh] sm:max-h-[95vh]">
+            <div className="max-w-3xl w-full mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
               <div className="flex flex-col">
-                <div className="relative w-full h-[200px] sm:h-[180px]">
+                <div className="relative w-full h-[280px]">
                   {article.urlToImage ? (
                     <Image
                       src={article.urlToImage}
@@ -195,7 +195,7 @@ export default function NewsSlider({ articles, onNeedMoreArticles }: NewsSliderP
                       return (
                         <div className="flex items-center space-x-2">
                           <span className="text-sm font-semibold text-blue-600">{sourceInfo?.region || 'International'}</span>
-                          <span className="text-xs text-gray-500">•</span>
+                          <span className="text-sm text-gray-500">•</span>
                           <span className="text-sm text-gray-600">{sourceInfo?.country || article.source.name}</span>
                         </div>
                       );
@@ -208,19 +208,19 @@ export default function NewsSlider({ articles, onNeedMoreArticles }: NewsSliderP
                       })}
                     </span>
                   </div>
-                  <h2 className="text-xl font-bold mb-1 leading-tight line-clamp-4 text-gray-900">{article.title}</h2>
-                  <p className="text-gray-600 mb-2 text-sm line-clamp-2">{article.description}</p>
+                  <h2 className="text-xl font-bold mb-2 leading-tight line-clamp-3 text-gray-900">{article.title}</h2>
+                  <p className="text-gray-600 mb-3 text-sm line-clamp-2">{article.description}</p>
                   <div className="flex items-center justify-between mt-auto pt-2 border-t border-gray-100">
                     <a
                       href={article.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-block bg-blue-600 text-white px-3 py-1 rounded-lg hover:bg-blue-700 transition-colors text-xs font-semibold"
+                      className="inline-block bg-blue-600 text-white px-3 py-1.5 rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
                     >
-                      Read More
+                      Read Article
                     </a>
                     {article.author && (
-                      <span className="text-xs text-gray-500 truncate ml-3 max-w-[60%]">
+                      <span className="text-xs text-gray-500 truncate ml-3">
                         By {article.author}
                       </span>
                     )}
