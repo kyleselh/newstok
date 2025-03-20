@@ -166,7 +166,7 @@ export default function NewsSlider({ articles, onNeedMoreArticles }: NewsSliderP
         {displayedArticles.map((article, index) => (
           <div
             key={`${article.url}-${index}`}
-            className="h-screen flex items-center justify-center p-4"
+            className="h-screen flex items-center justify-center p-4 pb-16"
             style={{
               backgroundColor: index % 2 === 0 ? '#f8fafc' : '#f1f5f9',
             }}
