@@ -158,7 +158,7 @@ export default function NewsSlider({ articles, onNeedMoreArticles }: NewsSliderP
         <p className="text-sm text-gray-600">Discover what's happening beyond US headlines</p>
       </div>
       <div 
-        className="absolute w-full transition-transform duration-300 ease-in-out pt-12"
+        className="absolute w-full transition-transform duration-300 ease-in-out pt-2"
         style={{
           transform: `translateY(-${currentIndex * 100}vh)`
         }}
@@ -166,7 +166,7 @@ export default function NewsSlider({ articles, onNeedMoreArticles }: NewsSliderP
         {displayedArticles.map((article, index) => (
           <div
             key={`${article.url}-${index}`}
-            className="h-screen flex items-center justify-center p-4 pb-16 md:pb-16 sm:p-2 sm:pb-8"
+            className="h-screen flex items-center justify-center pt-14 pb-14 px-4 md:pb-16 sm:px-2"
             style={{
               backgroundColor: index % 2 === 0 ? '#f8fafc' : '#f1f5f9',
             }}
