@@ -173,7 +173,7 @@ export default function NewsSlider({ articles, onNeedMoreArticles }: NewsSliderP
           >
             <div className="max-w-2xl w-full bg-white rounded-xl shadow-lg overflow-hidden max-h-[90vh] sm:max-h-[95vh]">
               <div className="flex flex-col">
-                <div className="relative w-full h-[280px] sm:h-[220px]">
+                <div className="relative w-full h-[200px] sm:h-[180px]">
                   {article.urlToImage ? (
                     <Image
                       src={article.urlToImage}
@@ -188,19 +188,19 @@ export default function NewsSlider({ articles, onNeedMoreArticles }: NewsSliderP
                     </div>
                   )}
                 </div>
-                <div className="p-5 flex flex-col">
-                  <div className="flex items-center justify-between mb-3">
+                <div className="p-4 flex flex-col">
+                  <div className="flex items-center justify-between mb-2">
                     {(() => {
                       const sourceInfo = getSourceInfo(new URL(article.url).hostname);
                       return (
                         <div className="flex items-center space-x-2">
                           <span className="text-sm font-semibold text-blue-600">{sourceInfo?.region || 'International'}</span>
-                          <span className="text-sm text-gray-500">•</span>
+                          <span className="text-xs text-gray-500">•</span>
                           <span className="text-sm text-gray-600">{sourceInfo?.country || article.source.name}</span>
                         </div>
                       );
                     })()}
-                    <span className="text-sm text-gray-500">
+                    <span className="text-xs text-gray-500">
                       {new Date(article.publishedAt).toLocaleDateString(undefined, {
                         month: 'short',
                         day: 'numeric',
@@ -208,19 +208,19 @@ export default function NewsSlider({ articles, onNeedMoreArticles }: NewsSliderP
                       })}
                     </span>
                   </div>
-                  <h2 className="text-xl font-bold mb-1 leading-tight line-clamp-3 text-gray-900">{article.title}</h2>
+                  <h2 className="text-xl font-bold mb-1 leading-tight line-clamp-4 text-gray-900">{article.title}</h2>
                   <p className="text-gray-600 mb-2 text-sm line-clamp-2">{article.description}</p>
                   <div className="flex items-center justify-between mt-auto pt-2 border-t border-gray-100">
                     <a
                       href={article.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-block bg-blue-600 text-white px-3 py-1.5 rounded-lg hover:bg-blue-700 transition-colors text-xs font-semibold"
+                      className="inline-block bg-blue-600 text-white px-3 py-1 rounded-lg hover:bg-blue-700 transition-colors text-xs font-semibold"
                     >
                       Read More
                     </a>
                     {article.author && (
-                      <span className="text-sm text-gray-500 truncate ml-4">
+                      <span className="text-xs text-gray-500 truncate ml-3 max-w-[60%]">
                         By {article.author}
                       </span>
                     )}
