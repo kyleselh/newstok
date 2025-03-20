@@ -1,9 +1,15 @@
-import React from 'react';
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { checkEnvironment } from "../utils/validateEnv";
 
 const inter = Inter({ subsets: ["latin"] });
+
+// Validate environment variables at startup
+if (typeof window === 'undefined') {
+  // Only run on server side
+  checkEnvironment();
+}
 
 export const metadata: Metadata = {
   title: "NewsTok - Your Daily News Summary",
@@ -17,9 +23,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className} suppressHydrationWarning={true}>
-        {children}
-      </body>
+      <body className={inter.className}>{children}</body>
     </html>
   );
 }
