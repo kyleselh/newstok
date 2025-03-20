@@ -153,12 +153,12 @@ export default function NewsSlider({ articles, onNeedMoreArticles }: NewsSliderP
       ref={containerRef}
       className="h-screen overflow-hidden relative"
     >
-      <div className="absolute top-0 left-0 right-0 z-10 bg-white bg-opacity-80 p-4 text-center shadow-sm">
+      <div className="fixed top-0 left-0 right-0 z-50 bg-white p-4 text-center shadow-md">
         <h1 className="text-2xl font-bold text-blue-600">NewsTok</h1>
         <p className="text-sm text-gray-600">Discover what's happening beyond US headlines</p>
       </div>
       <div 
-        className="absolute w-full transition-transform duration-300 ease-in-out"
+        className="absolute w-full transition-transform duration-300 ease-in-out pt-20"
         style={{
           transform: `translateY(-${currentIndex * 100}vh)`
         }}
