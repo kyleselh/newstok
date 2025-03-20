@@ -208,16 +208,16 @@ export default function NewsSlider({ articles, onNeedMoreArticles }: NewsSliderP
                       })}
                     </span>
                   </div>
-                  <h2 className="text-xl font-bold mb-2 leading-tight line-clamp-2 text-gray-900">{article.title}</h2>
-                  <p className="text-gray-600 mb-4 text-sm line-clamp-3">{article.description}</p>
+                  <h2 className="text-xl font-bold mb-1 leading-tight line-clamp-3 text-gray-900">{article.title}</h2>
+                  <p className="text-gray-600 mb-2 text-sm line-clamp-2">{article.description}</p>
                   <div className="flex items-center justify-between mt-auto pt-2 border-t border-gray-100">
                     <a
                       href={article.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-block bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm font-semibold"
+                      className="inline-block bg-blue-600 text-white px-3 py-1.5 rounded-lg hover:bg-blue-700 transition-colors text-xs font-semibold"
                     >
-                      Read Full Article
+                      Read More
                     </a>
                     {article.author && (
                       <span className="text-sm text-gray-500 truncate ml-4">
