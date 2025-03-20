@@ -1,9 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  swcMinify: true,
   env: {
     NEWS_API_KEY: process.env.NEWS_API_KEY,
+    UPSTASH_REDIS_URL: process.env.UPSTASH_REDIS_URL,
     UPSTASH_REDIS_TOKEN: process.env.UPSTASH_REDIS_TOKEN,
   },
   images: {
@@ -24,7 +24,7 @@ const nextConfig = {
         },
         {
           key: 'Strict-Transport-Security',
-          value: 'max-age=31536000; includeSubDomains'
+          value: 'max-age=31536000; includeSubDomains; preload'
         },
         {
           key: 'X-Frame-Options',
@@ -44,11 +44,28 @@ const nextConfig = {
         },
         {
           key: 'Permissions-Policy',
-          value: 'camera=(), microphone=(), geolocation=()'
+          value: 'camera=(), microphone=(), geolocation=(), interest-cohort=()'
         },
         {
           key: 'Content-Security-Policy',
-          value: "default-src 'self'; img-src 'self' https: data:; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; font-src 'self' data:;"
+          value: "default-src 'self'; img-src 'self' https: data:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self' data:; connect-src 'self' https://*.newsapi.org https://newsapi.org https://api.newsapi.org https://*.upstash.io; frame-ancestors 'none'; base-uri 'self'; form-action 'self';"
+        }
+      ]
+    },
+    {
+      source: '/api/:path*',
+      headers: [
+        {
+          key: 'Access-Control-Allow-Origin',
+          value: process.env.NODE_ENV === 'development' ? '*' : 'https://newstok.vercel.app'
+        },
+        {
+          key: 'Access-Control-Allow-Methods',
+          value: 'GET, OPTIONS'
+        },
+        {
+          key: 'Access-Control-Allow-Headers',
+          value: 'Content-Type, Authorization'
         }
       ]
     }

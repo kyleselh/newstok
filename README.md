@@ -34,10 +34,13 @@ yarn install
 Create a `.env.local` file in the root directory with the following variables:
 
 ```
-NEXT_PUBLIC_NEWS_API_KEY=your_news_api_key_here
+NEWS_API_KEY=your_news_api_key_here
+UPSTASH_REDIS_URL=your_redis_url_here
+UPSTASH_REDIS_TOKEN=your_redis_token_here
 ```
 
 You can obtain a News API key by signing up at [https://newsapi.org](https://newsapi.org)
+For Redis functionality, sign up at [Upstash](https://upstash.com) for a Redis database.
 
 Then, run the development server:
 
@@ -81,3 +84,26 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Security Features
+
+This application includes several security measures:
+
+- **Rate Limiting**: Prevents abuse through IP-based request throttling
+- **Input Validation**: All inputs are validated using Zod schemas
+- **Content Sanitization**: Prevents XSS attacks by sanitizing all external content
+- **HTTP Security Headers**: Implements best practices for security headers
+- **CORS Protection**: Restricts access to the API from unauthorized origins
+- **Environment Variable Validation**: Checks required variables are set at startup
+- **Error Handling**: Prevents leaking of sensitive information in error messages
+- **Deployment Scripts**: Includes security checks before deployment
+
+### Security Deployment Checklist
+
+Before deploying to production:
+
+1. Run the security audit: `npm run security-audit`
+2. Ensure all environment variables are set correctly
+3. Never commit .env files to your repository
+4. Use the deployment scripts in the `/scripts` directory
+5. Consider running a penetration test before public release
